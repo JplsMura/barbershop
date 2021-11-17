@@ -1,0 +1,60 @@
+version: "3.7"
+services:
+    # image project
+    backend-api:
+        build: 
+            args: 
+                user: jpls
+                uid: 1001
+            context: ./
+            dockerfile: Dockerfile
+        container_name: app-barber
+        image: laravel-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks: 
+            - barber
+    
+    # nginx
+    nginx-api:
+        image: nginx:alpine
+        container_name: nginx-barber
+        restart: unless-stopped
+        ports: 
+            - 8005:80
+        volumes: 
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks: 
+            - barber
+
+    # db mysql
+    mysql-api:
+        image: mysql:5.7.22
+        container_name: mysql-barber
+        restart: unless-stopped
+        environment: 
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes: 
+            - ./.docker/mysql/dbdata:/var/lib/mysql
+        ports: 
+            - 3390:3306
+        networks: 
+            - barber
+    
+    #adminer
+    adminer-api:
+        image: adminer
+        container_name: adminer-barber
+        restart: always
+        ports:
+            - 8086:8080
+
+networks: 
+    barber:
+        driver: bridge
