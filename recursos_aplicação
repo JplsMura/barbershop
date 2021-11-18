@@ -1,1 +1,25 @@
 Autênticação da aplicação com JWT-AUTH
+
+Planejamento do BD:
+
+- USUARIOS
+-- BARBEIROS FAVORITOS
+-- AGENDAMENTOS
+
+- BARBEIROS
+-- FOTOS
+-- NOTAS
+-- SERVIÇOS
+-- DEPOIMENTOS
+-- DISPONIBILIDADE
+
+TABELAS:
+
+- users
+- userFavorites
+- userAppointments
+- barbers
+- barberPhotos
+- barberServices
+- barberTestimonials
+- baberAvailability
