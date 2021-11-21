@@ -5,7 +5,7 @@ services:
         build: 
             args: 
                 user: jpls
-                uid: 1001
+                uid: 1000
             context: ./
             dockerfile: Dockerfile
         container_name: app-barber
@@ -31,19 +31,20 @@ services:
             - barber
 
     # db mysql
-    mysql-api:
+    mysql-app:
         image: mysql:5.7.22
         container_name: mysql-barber
+        command: --default-authentication-plugin=mysql_native_password
         restart: unless-stopped
         environment: 
-            MYSQL_DATABASE: ${DB_DATABASE}
+            # MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_USER: ${DB_USERNAME}
+            # MYSQL_PASSWORD: ${DB_PASSWORD}
+            # MYSQL_USER: ${DB_USERNAME}33
         volumes: 
             - ./.docker/mysql/dbdata:/var/lib/mysql
         ports: 
-            - 3390:3306
+            - 3388:3306
         networks: 
             - barber
     
@@ -54,6 +55,8 @@ services:
         restart: always
         ports:
             - 8086:8080
+        networks: 
+            - barber
 
 networks: 
     barber:
